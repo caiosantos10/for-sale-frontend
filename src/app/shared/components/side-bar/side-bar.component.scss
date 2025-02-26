@@ -1,16 +1,8 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
-
-html {
-  font-family: Arial;
-  font-size: 16px;
-  background: #5e42a6;
-}
-
 .sidebar {
   position: fixed;
   width: 25%;
   height: 100vh;
-  background: #312450;
+  background: #2a5c0b;
   font-size: 0.65em;
 }
 
@@ -59,41 +51,8 @@ html {
         background: black;
         left: 0;
         bottom: 0;
-        background-image: linear-gradient(to right, #5e42a6, #b74e91)
+        background-image: linear-gradient(to right, #d6e36e, #faedd9)
       }
     }
-  }
-}
-
-.twitter {
-  position: relative;
-  width: 75%;
-  float: right;
-  height: 100vh;
-
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-  }
-
-  a {
-    position: relative;
-
-    img {
-      width: 48px;
-      height: 48px;
-    }
-  }
-
-  p {
-    text-transform: uppercase;
-    font-size: 1em;
-    letter-spacing: 0.1em;
-    color: #FFF;
-    font-weight: bold;
-    margin-top: 20px;
   }
 }
