@@ -8,14 +8,16 @@
 
   <nav class="header-shell__main-nav" aria-label="Menu principal">
     @for (item of menuItems; track item.label) {
-      <a class="header-shell__main-nav--link" [href]="item.href">{{ item.label }}</a>
+      <a class="header-shell__main-nav--link" [routerLink]="item.route">{{ item.label }}</a>
     }
   </nav>
 
   <div class="user-menu" [class.user-menu--open]="isUserMenuOpen">
     @if (!isLoggedIn) {
       <div class="user-menu__auth-links" aria-label="Acesso da conta">
-        <button class="user-menu__auth-link" type="button">Entre ou Cadastre-se</button>
+        <a class="user-menu__auth-link" [routerLink]="'/auth/login'">Entrar</a>
+        <span class="user-menu__auth-link">ou</span>
+        <a class="user-menu__auth-link" [routerLink]="'/auth/cadastro'">Cadastrar</a>
       </div>
     }
 
@@ -36,7 +38,7 @@
     @if (isUserMenuOpen) {
       <div class="user-menu__panel" role="menu" aria-label="Opções da conta">
         @for (item of userMenuItems; track item.label) {
-          <a class="user-menu__item" [href]="item.href" role="menuitem" (click)="closeUserMenu()">
+          <a class="user-menu__item" [routerLink]="item.route" role="menuitem" (click)="closeUserMenu()">
             {{ item.label }}
           </a>
         }

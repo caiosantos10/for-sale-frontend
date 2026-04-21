@@ -1,15 +1,16 @@
 import { Component, ElementRef, HostListener } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
 
 interface MenuItem {
   label: string;
-  href: string;
+  route: string;
 }
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [MatIconModule],
+  imports: [MatIconModule, RouterLink],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -17,14 +18,14 @@ export class HeaderComponent {
   constructor(private readonly elementRef: ElementRef<HTMLElement>) {}
 
   protected readonly menuItems: MenuItem[] = [
-    { label: 'Produtos', href: '#' },
-    { label: 'Pedidos', href: '#' },
-    { label: 'Avaliações', href: '#' },
+    { label: 'Produtos', route: '/produtos' },
+    { label: 'Pedidos', route: '/pedidos' },
+    { label: 'Avaliações', route: '/avaliacoes' },
   ];
 
   protected readonly userMenuItems: MenuItem[] = [
-    { label: 'Configurações da Conta', href: '#' },
-    { label: 'Financeiro', href: '#' },
+    { label: 'Configurações da Conta', route: '/configuracoes-conta' },
+    { label: 'Financeiro', route: '/financeiro' },
   ];
 
   protected isLoggedIn = false;
