@@ -1,0 +1,126 @@
+@use 'colors' as *;
+
+.header-shell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+  padding: 0 24px;
+
+  .brand-area {
+    display: flex;
+    align-items: center;
+  }
+
+  .brand-chip {
+    color: $color-text-primary;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.2px;
+    line-height: 1;
+  }
+
+  &__main-nav {
+    display: flex;
+    gap: 8px;
+
+    &--link {
+      text-decoration: none;
+      color: $color-text-primary;
+      padding: 10px 12px;
+      border-radius: 999px;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .user-menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    &__auth-links {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    &__auth-link {
+      border: 0;
+      background: transparent;
+      color: $color-text-primary;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 0;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    &__trigger {
+      width: 40px;
+      height: 40px;
+      border: 0;
+      border-radius: 50%;
+      background: $color-hover-gray;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    &__photo {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    &__fallback {
+      font-size: 22px;
+      color: $color-text-primary;
+    }
+
+    &__panel {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 220px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      border-radius: 12px;
+      box-shadow: 0 10px 28px rgba(24, 17, 17, 0.12);
+      z-index: 10;
+    }
+
+    &__item {
+      border: 0;
+      background: transparent;
+      text-align: left;
+      text-decoration: none;
+      color: $color-text-primary;
+      font-size: 14px;
+      line-height: 20px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+
+      &:hover {
+        background: $color-hover-gray;
+      }
+    }
+
+    &__item--auth {
+      color: $color-brand;
+      font-weight: 700;
+    }
+  }
+
+}
