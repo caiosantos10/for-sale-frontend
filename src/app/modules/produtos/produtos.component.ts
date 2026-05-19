@@ -29,10 +29,10 @@ export class ProdutosComponent implements OnInit {
     this.produtosService.getAll()
       .pipe(catchError(() => {
         this.error = 'Erro ao carregar produtos.';
-        return of([]);
+        return of({ total: 0, page: 1, lastPage: 1, data: [] });
       }))
-      .subscribe(products => {
-        this.products = products;
+      .subscribe((response) => {
+        this.products = response.data;
         this.loading = false;
       });
   }

@@ -1,1 +1,30 @@
-<p>login works!</p>
+<section class="login-page">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+    <div>
+      <label for="email">Login</label>
+      <input
+        id="email"
+        type="text"
+        formControlName="email"
+        autocomplete="username"
+      />
+    </div>
+
+    <div>
+      <label for="password">Senha</label>
+      <input
+        id="password"
+        type="password"
+        formControlName="password"
+        autocomplete="current-password"
+      />
+    </div>
+
+    <button type="submit" [disabled]="loading">
+      {{ loading ? 'Enviando...' : 'Ok' }}
+    </button>
+  </form>
+
+  <p *ngIf="error" class="error">{{ error }}</p>
+  <p *ngIf="success" class="success">Login realizado com sucesso.</p>
+</section>
