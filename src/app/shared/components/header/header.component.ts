@@ -18,14 +18,14 @@ export class HeaderComponent {
   constructor(private readonly elementRef: ElementRef<HTMLElement>) {}
 
   protected readonly menuItems: MenuItem[] = [
-    { label: 'Produtos', route: '/produtos' },
-    { label: 'Pedidos', route: '/pedidos' },
-    { label: 'Avaliações', route: '/avaliacoes' },
+    { label: 'Products', route: '/products' },
+    { label: 'Orders', route: '/pedidos' },
+    { label: 'Reviews', route: '/avaliacoes' },
   ];
 
   protected readonly userMenuItems: MenuItem[] = [
-    { label: 'Configurações da Conta', route: '/configuracoes-conta' },
-    { label: 'Financeiro', route: '/financeiro' },
+    { label: 'Account Settings', route: '/configuracoes-conta' },
+    { label: 'Finance', route: '/financeiro' },
   ];
 
   protected isLoggedIn = false;
