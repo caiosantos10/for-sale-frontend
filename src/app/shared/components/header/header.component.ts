@@ -1,6 +1,7 @@
 import { Component, ElementRef, HostListener } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../../modules/auth/service/auth.service';
 
 interface MenuItem {
   label: string;
@@ -15,7 +16,15 @@ interface MenuItem {
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-  constructor(private readonly elementRef: ElementRef<HTMLElement>) {}
+  constructor(
+    private readonly elementRef: ElementRef<HTMLElement>,
+    private authService: AuthService,
+    private router: Router
+  ) { }
+
+  get isLoggedIn(): boolean {
+    return this.authService.isAuthenticated();
+  }
 
   protected readonly menuItems: MenuItem[] = [
     { label: 'Products', route: '/products' },
@@ -28,9 +37,7 @@ export class HeaderComponent {
     { label: 'Finance', route: '/financeiro' },
   ];
 
-  protected isLoggedIn = false;
   protected isUserMenuOpen = false;
-  protected userPhotoUrl: string | null = null;
 
   protected toggleUserMenu(): void {
     this.isUserMenuOpen = !this.isUserMenuOpen;
@@ -38,6 +45,12 @@ export class HeaderComponent {
 
   protected closeUserMenu(): void {
     this.isUserMenuOpen = false;
+  }
+
+  protected logout(): void {
+    this.authService.logout();
+    this.closeUserMenu();
+    this.router.navigate(['/auth/login']);
   }
 
   @HostListener('document:click', ['$event'])

@@ -33,7 +33,6 @@ export class ProductsComponent implements OnInit {
         return of({ total: 0, page: 1, lastPage: 1, data: [] });
       }))
       .subscribe((response) => {
-        console.log('Products loaded:', response.data);
         this.products = response.data;
         this.loading = false;
       });

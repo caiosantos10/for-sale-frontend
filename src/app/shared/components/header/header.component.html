@@ -3,47 +3,57 @@
     <span class="brand-chip">For Sale</span>
   </div>
 
-  <nav class="header-shell__main-nav" aria-label="Menu principal">
-    @for (item of menuItems; track item.label) {
-      <a class="header-shell__main-nav--link" [routerLink]="item.route">{{ item.label }}</a>
-    }
-  </nav>
+  @if (isLoggedIn) {
+      <nav class="header-shell__main-nav" aria-label="Menu principal">
+        @for (item of menuItems; track item.label) {
+          <a class="header-shell__main-nav--link" [routerLink]="item.route">{{ item.label }}</a>
+        }
+      </nav>
+  }
 
   <div class="user-menu" [class.user-menu--open]="isUserMenuOpen">
     @if (!isLoggedIn) {
       <div class="user-menu__auth-links" aria-label="Acesso da conta">
-        <a class="user-menu__auth-link" [routerLink]="'/auth/login'">Entrar</a>
-        <span class="user-menu__auth-link">ou</span>
+        <a class="user-menu__auth-link" [routerLink]="'/auth/login'">Login</a>
+        <span class="user-menu__auth-link">or</span>
         <a class="user-menu__auth-link" [routerLink]="'/auth/register'">Register</a>
       </div>
     }
 
-    <button
-      class="user-menu__trigger"
-      type="button"
-      aria-haspopup="menu"
-      [attr.aria-expanded]="isUserMenuOpen"
-      (click)="toggleUserMenu()"
-    >
-      @if (userPhotoUrl) {
-        <img class="user-menu__photo" [src]="userPhotoUrl" alt="Foto do usuário" />
-      } @else {
+    @if (isLoggedIn) {
+      <button
+        class="user-menu__trigger"
+        type="button"
+        aria-haspopup="menu"
+        [attr.aria-expanded]="isUserMenuOpen"
+        (click)="toggleUserMenu()"
+      >
         <mat-icon class="user-menu__fallback" aria-hidden="true">person</mat-icon>
-      }
-    </button>
-
-    @if (isUserMenuOpen) {
-      <div class="user-menu__panel" role="menu" aria-label="Opções da conta">
-        @for (item of userMenuItems; track item.label) {
-          <a class="user-menu__item" [routerLink]="item.route" role="menuitem" (click)="closeUserMenu()">
-            {{ item.label }}
-          </a>
+        <!-- @if (userPhotoUrl) {
+          <img class="user-menu__photo" [src]="userPhotoUrl" alt="Foto do usuário" />
+        } @else  {
+          <mat-icon class="user-menu__fallback" aria-hidden="true">person</mat-icon>
         }
+        -->
+      </button>
 
-        <button class="user-menu__item user-menu__item--auth" type="button" role="menuitem">
-          Sair
-        </button>
-      </div>
+      @if (isUserMenuOpen) {
+        <div class="user-menu__panel" role="menu" aria-label="Opções da conta">
+          @for (item of userMenuItems; track item.label) {
+            <a class="user-menu__item" [routerLink]="item.route" role="menuitem" (click)="closeUserMenu()">
+              {{ item.label }}
+            </a>
+          }
+
+          <button
+            class="user-menu__item user-menu__item--auth"
+            type="button"
+            role="menuitem"
+            (click)="logout()">
+            Logout
+          </button>
+        </div>
+      }
     }
   </div>
 
