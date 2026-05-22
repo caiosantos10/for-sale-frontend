@@ -1,1 +1,37 @@
-<p>cadastro works!</p>
+<section class="register-page">
+	<form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+		<div>
+			<label for="name">Name</label>
+			<input id="name" type="text" formControlName="name" />
+		</div>
+
+		<div>
+			<label for="lastName">Last Name</label>
+			<input id="lastName" type="text" formControlName="lastName" />
+		</div>
+
+		<div>
+			<label for="email">Email</label>
+			<input id="email" type="email" formControlName="email" />
+		</div>
+
+		<div>
+			<label for="password">Password</label>
+			<input id="password" type="password" formControlName="password" />
+		</div>
+
+		<div>
+			<label for="role">Role</label>
+			<select id="role" formControlName="role">
+				<option value="CUSTOMER">CUSTOMER</option>
+				<option value="ADMIN">ADMIN</option>
+			</select>
+		</div>
+
+		<button type="submit" [disabled]="loading || registerForm.invalid">
+			{{ loading ? 'Loading...' : 'Register' }}
+		</button>
+
+		<p *ngIf="error" class="error">{{ error }}</p>
+	</form>
+</section>

@@ -1,7 +1,7 @@
 import { Component, ElementRef, HostListener } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../../modules/auth/service/auth.service';
+import { AuthService } from '../../../modules/auth/services/auth.service';
 
 interface MenuItem {
   label: string;
