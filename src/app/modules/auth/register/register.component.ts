@@ -38,7 +38,6 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log('disparou');
     if (this.registerForm.invalid) {
       this.error = 'Please fill in the fields correctly.';
       return;

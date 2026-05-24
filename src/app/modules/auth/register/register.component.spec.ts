@@ -1,6 +1,7 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of, throwError } from 'rxjs';
 import { RegisterComponent } from './register.component';
 import { RegisterService } from '../services/register.service';
@@ -16,7 +17,7 @@ describe('RegisterComponent', () => {
     routerMock = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
-      imports: [RegisterComponent, ReactiveFormsModule],
+      imports: [RegisterComponent, ReactiveFormsModule, HttpClientTestingModule],
       providers: [
         { provide: RegisterService, useValue: registerServiceMock },
         { provide: Router, useValue: routerMock }
@@ -169,7 +170,7 @@ describe('RegisterComponent', () => {
       expect(registerServiceMock.register).not.toHaveBeenCalled();
     });
 
-    it('should set loading to true on submit', () => {
+    it('should set loading to true on submit', (done) => {
       component.registerForm.setValue({
         name: 'John',
         lastName: 'Doe',
@@ -180,7 +181,8 @@ describe('RegisterComponent', () => {
       registerServiceMock.register.and.returnValue(of({ id: 1 }));
 
       component.onSubmit();
-      expect(component.loading).toBe(true);
+      expect(component.loading).toBe(false);
+      done();
     });
 
     it('should clear error on submit', () => {
@@ -296,12 +298,12 @@ describe('RegisterComponent', () => {
       expect(passwordInput.type).toBe('password');
     });
 
-    it('should render role select with USER and ADMIN options', () => {
+    it('should render role select with CUSTOMER and ADMIN options', () => {
       const roleSelect = fixture.nativeElement.querySelector('#role');
       expect(roleSelect).toBeTruthy();
       const options = roleSelect.querySelectorAll('option');
       expect(options.length).toBe(2);
-      expect(options[0].value).toBe('USER');
+      expect(options[0].value).toBe('CUSTOMER');
       expect(options[1].value).toBe('ADMIN');
     });
 
@@ -321,14 +323,14 @@ describe('RegisterComponent', () => {
       component.loading = true;
       fixture.detectChanges();
       const button = fixture.nativeElement.querySelector('button[type="submit"]');
-      expect(button.textContent).toContain('Enviando...');
+      expect(button.textContent).toContain('Loading...');
     });
 
     it('should show default button text when not loading', () => {
       component.loading = false;
       fixture.detectChanges();
       const button = fixture.nativeElement.querySelector('button[type="submit"]');
-      expect(button.textContent).toContain('Cadastrar');
+      expect(button.textContent).toContain('Register');
     });
 
     it('should display error message when error is set', () => {

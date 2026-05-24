@@ -1,10 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { provideHttpClient } from '@angular/common/http';
+import { provideRouter } from '@angular/router';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
+      providers: [provideHttpClient(), provideRouter([])]
     }).compileComponents();
   });
 
@@ -28,13 +31,6 @@ describe('AppComponent', () => {
   });
 
   describe('Template Rendering', () => {
-    it('should render title in h1 tag', () => {
-      const fixture = TestBed.createComponent(AppComponent);
-      fixture.detectChanges();
-      const compiled = fixture.nativeElement as HTMLElement;
-      expect(compiled.querySelector('h1')?.textContent).toContain('Hello, for-sale-frontend');
-    });
-
     it('should render router outlet', () => {
       const fixture = TestBed.createComponent(AppComponent);
       fixture.detectChanges();

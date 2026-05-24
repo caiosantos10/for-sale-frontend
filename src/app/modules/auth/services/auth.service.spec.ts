@@ -1,4 +1,3 @@
-import 'jasmine';
 import { TestBed } from '@angular/core/testing';
 import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
@@ -41,7 +40,7 @@ describe('AuthService', () => {
       const credentials = { email: 'test@example.com', password: 'password123' };
       const response = {
         token: 'test-token-123',
-        user: { name: 'John', lastName: 'Doe', email: 'test@example.com', role: 'USER' }
+        user: { name: 'John', lastName: 'Doe', email: 'test@example.com', role: 'CUSTOMER' }
       };
 
       httpClientMock.post.and.returnValue(of(response));
@@ -55,7 +54,7 @@ describe('AuthService', () => {
       const credentials = { email: 'test@example.com', password: 'password123' };
       const response = {
         token: 'test-token-123',
-        user: { name: 'John', lastName: 'Doe', email: 'test@example.com', role: 'USER' }
+        user: { name: 'John', lastName: 'Doe', email: 'test@example.com', role: 'CUSTOMER' }
       };
 
       httpClientMock.post.and.returnValue(of(response));
@@ -88,7 +87,7 @@ describe('AuthService', () => {
         name: 'John',
         lastName: 'Doe',
         email: 'test@example.com',
-        role: 'USER'
+        role: 'CUSTOMER'
       };
       localStorage.setItem('auth_user', JSON.stringify(user));
       const retrievedUser = service.getUser();

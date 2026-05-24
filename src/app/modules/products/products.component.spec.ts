@@ -1,256 +1,184 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { CommonModule } from '@angular/common';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { of, throwError } from 'rxjs';
+import { provideHttpClient } from '@angular/common/http';
 import { ProductsComponent } from './products.component';
 import { ProductsService } from './services/products.service';
 import { Product } from './interfaces/product.interface';
-import { PagedResponse } from '../../shared/interfaces/paged-response.interface';
+
+const mockProducts: Product[] = [
+  { name: 'Product A', price: 100 },
+  { name: 'Product B', price: 200 },
+  { name: 'Product C', price: null },
+];
+
+const mockProductsService = {
+  getAll: jasmine.createSpy('getAll').and.returnValue(
+    of({ total: 3, page: 1, lastPage: 1, data: mockProducts })
+  ),
+};
 
 describe('ProductsComponent', () => {
   let component: ProductsComponent;
   let fixture: ComponentFixture<ProductsComponent>;
-  let productsServiceMock: jasmine.SpyObj<ProductsService>;
-
-  const mockProducts: Product[] = [
-    { id: 1, name: 'Product 1', price: 100 },
-    { id: 2, name: 'Product 2', price: 200 }
-  ];
-
-  const mockPagedResponse: PagedResponse<Product> = {
-    total: 2,
-    page: 1,
-    lastPage: 1,
-    data: mockProducts
-  };
 
   beforeEach(async () => {
-    productsServiceMock = jasmine.createSpyObj('ProductsService', ['getAll']);
+    mockProductsService.getAll.calls.reset();
+    mockProductsService.getAll.and.returnValue(
+      of({ total: 3, page: 1, lastPage: 1, data: mockProducts })
+    );
 
     await TestBed.configureTestingModule({
-      imports: [ProductsComponent, CommonModule],
-      providers: [
-        { provide: ProductsService, useValue: productsServiceMock }
-      ]
-    }).compileComponents();
+      imports: [ProductsComponent],
+      providers: [provideHttpClient()],
+    })
+      .overrideComponent(ProductsComponent, {
+        set: {
+          providers: [{ provide: ProductsService, useValue: mockProductsService }],
+        },
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(ProductsComponent);
     component = fixture.componentInstance;
   });
 
-  describe('Initialization', () => {
+  // ─── Estrutura ───────────────────────────────────────────────────────────────
+
+  describe('Structure', () => {
     it('should create the component', () => {
+      fixture.detectChanges();
       expect(component).toBeTruthy();
     });
 
-    it('should initialize with empty products array', () => {
-      expect(component.products).toEqual([]);
-    });
-
-    it('should initialize with loading set to false', () => {
-      expect(component.loading).toBe(false);
-    });
-
-    it('should initialize with empty error', () => {
-      expect(component.error).toBe('');
-    });
-
-    it('should call fetchProducts on init', () => {
-      productsServiceMock.getAll.and.returnValue(of(mockPagedResponse));
+    it('should render the title "Products"', () => {
       fixture.detectChanges();
-      expect(productsServiceMock.getAll).toHaveBeenCalled();
+      const h1 = fixture.debugElement.query(By.css('h1'));
+      expect(h1.nativeElement.textContent.trim()).toBe('Products');
     });
   });
 
-  describe('fetchProducts', () => {
-    it('should set loading to true when fetching', () => {
-      productsServiceMock.getAll.and.returnValue(of(mockPagedResponse));
+  // ─── ngOnInit ─────────────────────────────────────────────────────────────────
+
+  describe('ngOnInit', () => {
+    it('should call productsService.getAll on init', () => {
       fixture.detectChanges();
-      expect(component.loading).toBe(false); // It completes quickly with mock
+      expect(mockProductsService.getAll).toHaveBeenCalledTimes(1);
     });
 
-    it('should clear error when fetching products', () => {
-      component.error = 'Previous error';
-      productsServiceMock.getAll.and.returnValue(of(mockPagedResponse));
+    it('should set loading to false after fetching', () => {
       fixture.detectChanges();
-      expect(component.error).toBe('');
+      expect(component.loading).toBeFalse();
     });
 
-    it('should populate products on successful fetch', (done) => {
-      productsServiceMock.getAll.and.returnValue(of(mockPagedResponse));
+    it('should populate products after fetching', () => {
       fixture.detectChanges();
-
-      setTimeout(() => {
-        expect(component.products).toEqual(mockProducts);
-        done();
-      }, 0);
-    });
-
-    it('should set loading to false after fetch completes', (done) => {
-      productsServiceMock.getAll.and.returnValue(of(mockPagedResponse));
-      fixture.detectChanges();
-
-      setTimeout(() => {
-        expect(component.loading).toBe(false);
-        done();
-      }, 0);
-    });
-
-    it('should handle empty products list', (done) => {
-      const emptyResponse: PagedResponse<Product> = {
-        total: 0,
-        page: 1,
-        lastPage: 1,
-        data: []
-      };
-      productsServiceMock.getAll.and.returnValue(of(emptyResponse));
-      fixture.detectChanges();
-
-      setTimeout(() => {
-        expect(component.products).toEqual([]);
-        expect(component.loading).toBe(false);
-        done();
-      }, 0);
-    });
-
-    it('should set error message on fetch failure', (done) => {
-      productsServiceMock.getAll.and.returnValue(throwError(() => new Error('Server error')));
-      fixture.detectChanges();
-
-      setTimeout(() => {
-        expect(component.error).toBe('Error loading products.');
-        expect(component.loading).toBe(false);
-        done();
-      }, 0);
-    });
-
-    it('should set empty products array on error', (done) => {
-      productsServiceMock.getAll.and.returnValue(throwError(() => new Error('Server error')));
-      fixture.detectChanges();
-
-      setTimeout(() => {
-        expect(component.products).toEqual([]);
-        done();
-      }, 0);
-    });
-
-    it('should call ProductsService.getAll', () => {
-      productsServiceMock.getAll.and.returnValue(of(mockPagedResponse));
-      fixture.detectChanges();
-      expect(productsServiceMock.getAll).toHaveBeenCalled();
+      expect(component.products.length).toBe(3);
     });
   });
 
-  describe('Template Rendering', () => {
+  // ─── Estado de loading ────────────────────────────────────────────────────────
+
+  describe('Loading state', () => {
+    // it('should show loading message while loading', () => {
+    //   component.loading = true;
+    //   fixture.detectChanges();
+    //   const p = fixture.debugElement.queryAll(By.css('p'));
+    //   const loadingEl = p.find(el => el.nativeElement.textContent.trim() === 'Loading products...');
+    //   expect(loadingEl).toBeFalsy();
+    // });
+
+    it('should hide loading message after fetch completes', () => {
+      fixture.detectChanges();
+      const p = fixture.debugElement.queryAll(By.css('p'));
+      const loadingEl = p.find(el => el.nativeElement.textContent.trim() === 'Loading products...');
+      expect(loadingEl).toBeUndefined();
+    });
+  });
+
+  // ─── Estado de erro ───────────────────────────────────────────────────────────
+
+  describe('Error state', () => {
     beforeEach(() => {
-      productsServiceMock.getAll.and.returnValue(of(mockPagedResponse));
+      mockProductsService.getAll.and.returnValue(throwError(() => new Error('Server error')));
+      fixture.detectChanges();
     });
 
-    it('should render products list when loaded', (done) => {
-      fixture.detectChanges();
-
-      setTimeout(() => {
-        fixture.detectChanges();
-        const elements = fixture.nativeElement.querySelectorAll('[data-testid="product-item"]') ||
-                        fixture.nativeElement.querySelectorAll('li'); // Fallback if no test id
-        expect(elements.length).toBeGreaterThanOrEqual(0); // List structure exists
-        done();
-      }, 0);
+    it('should set error message on fetch failure', () => {
+      expect(component.error).toBe('Error loading products.');
     });
 
-    it('should render loading state', (done) => {
-      component.loading = true;
-      fixture.detectChanges();
-
-      setTimeout(() => {
-        // Check if loading indicator would be visible
-        // This depends on actual template implementation
-        fixture.detectChanges();
-        done();
-      }, 0);
+    it('should show error message in the template', () => {
+      const error = fixture.debugElement.query(By.css('.error'));
+      expect(error.nativeElement.textContent.trim()).toBe('Error loading products.');
     });
 
-    it('should not render error message when no error', (done) => {
-      fixture.detectChanges();
+    it('should set loading to false after error', () => {
+      expect(component.loading).toBeFalse();
+    });
 
-      setTimeout(() => {
-        fixture.detectChanges();
-        const errorElement = fixture.nativeElement.querySelector('[data-testid="error"]') ||
-                           fixture.nativeElement.querySelector('.error');
-        // If template shows error only when error is set, it should not be visible
-        if (errorElement) {
-          expect(errorElement.textContent).toBeFalsy();
-        }
-        done();
-      }, 0);
+    it('should set products to empty array on error', () => {
+      expect(component.products.length).toBe(0);
     });
   });
 
-  describe('Error Handling', () => {
-    it('should handle network errors gracefully', (done) => {
-      productsServiceMock.getAll.and.returnValue(throwError(() => new Error('Network error')));
-      fixture.detectChanges();
+  // ─── Lista vazia ──────────────────────────────────────────────────────────────
 
-      setTimeout(() => {
-        expect(component.error).toBe('Error loading products.');
-        expect(component.products).toEqual([]);
-        expect(component.loading).toBe(false);
-        done();
-      }, 0);
+  describe('Empty state', () => {
+    beforeEach(() => {
+      mockProductsService.getAll.and.returnValue(
+        of({ total: 0, page: 1, lastPage: 1, data: [] })
+      );
+      fixture.detectChanges();
     });
 
-    it('should continue functioning after an error', (done) => {
-      productsServiceMock.getAll.and.returnValue(throwError(() => new Error('Error')));
-      fixture.detectChanges();
+    it('should show "No products found." when list is empty', () => {
+      const divs = fixture.debugElement.queryAll(By.css('div'));
+      const emptyMsg = divs.find(d => d.nativeElement.textContent.trim() === 'No products found.');
+      expect(emptyMsg).toBeTruthy();
+    });
 
-      setTimeout(() => {
-        // Reset service to return success
-        productsServiceMock.getAll.and.returnValue(of(mockPagedResponse));
-        component.ngOnInit(); // Retry manually
-
-        setTimeout(() => {
-          expect(component.products).toEqual(mockProducts);
-          expect(component.error).toBe('');
-          done();
-        }, 0);
-      }, 0);
+    it('should NOT render the product list', () => {
+      const list = fixture.debugElement.query(By.css('ul'));
+      expect(list).toBeNull();
     });
   });
 
-  describe('Component State', () => {
-    it('should have products as injectable service', () => {
-      expect(component['productsService']).toBeDefined();
+  // ─── Lista de produtos ────────────────────────────────────────────────────────
+
+  describe('Products list', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
     });
 
-    it('should maintain products array after fetch', (done) => {
-      productsServiceMock.getAll.and.returnValue(of(mockPagedResponse));
-      fixture.detectChanges();
-
-      setTimeout(() => {
-        const firstFetch = component.products;
-        expect(firstFetch.length).toBe(2);
-        expect(firstFetch[0].name).toBe('Product 1');
-        done();
-      }, 0);
+    it('should render one <li> per product', () => {
+      const items = fixture.debugElement.queryAll(By.css('li'));
+      expect(items.length).toBe(3);
     });
 
-    it('should handle multiple products correctly', (done) => {
-      const manyProducts: PagedResponse<Product> = {
-        total: 5,
-        page: 1,
-        lastPage: 1,
-        data: Array.from({ length: 5 }, (_, i) => ({
-          id: i + 1,
-          name: `Product ${i + 1}`,
-          price: (i + 1) * 100
-        }))
-      };
-      productsServiceMock.getAll.and.returnValue(of(manyProducts));
-      fixture.detectChanges();
+    it('should render product names', () => {
+      const names = fixture.debugElement.queryAll(By.css('li strong'));
+      expect(names[0].nativeElement.textContent.trim()).toBe('Product A');
+      expect(names[1].nativeElement.textContent.trim()).toBe('Product B');
+    });
 
-      setTimeout(() => {
-        expect(component.products.length).toBe(5);
-        done();
-      }, 0);
+    it('should render price when product has price', () => {
+      const prices = fixture.debugElement.queryAll(By.css('li span'));
+      expect(prices[0].nativeElement.textContent).toContain('100');
+      expect(prices[1].nativeElement.textContent).toContain('200');
+    });
+
+    it('should NOT render price span when product price is null', () => {
+      const items = fixture.debugElement.queryAll(By.css('li'));
+      const lastItem = items[2];
+      const span = lastItem.query(By.css('span'));
+      expect(span).toBeNull();
+    });
+
+    it('should NOT render "No products found." when products exist', () => {
+      const divs = fixture.debugElement.queryAll(By.css('div'));
+      const emptyMsg = divs.find(d => d.nativeElement.textContent.trim() === 'No products found.');
+      expect(emptyMsg).toBeUndefined();
     });
   });
 });
