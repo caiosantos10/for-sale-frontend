@@ -4,11 +4,18 @@
   </div>
 
   @if (isLoggedIn) {
-      <nav class="header-shell__main-nav" aria-label="Menu principal">
+      <nav class="header-shell__main-nav" aria-label="Logged Menu">
         @for (item of menuItems; track item.label) {
           <a class="header-shell__main-nav--link" [routerLink]="item.route">{{ item.label }}</a>
         }
       </nav>
+  } @else {
+    <nav class="header-shell__main-nav" aria-label="Home">
+      <a class="header-shell__main-nav--link" [routerLink]="'/home'">Home</a>
+      <a class="header-shell__main-nav--link" [routerLink]="'/home'">About us</a>
+      <a class="header-shell__main-nav--link" [routerLink]="'/home'">Reviews</a>
+      <a class="header-shell__main-nav--link" [routerLink]="'/home'">FAQ</a>
+    </nav>
   }
 
   <div class="user-menu" [class.user-menu--open]="isUserMenuOpen">

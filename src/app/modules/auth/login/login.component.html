@@ -1,29 +1,43 @@
 <section class="login-page">
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-    <div>
-      <label for="email">Login</label>
-      <input
-        id="email"
-        type="text"
-        formControlName="email"
-        autocomplete="username"
-      />
-    </div>
+  <mat-card class="login-card">
+    <mat-card-title>Welcome</mat-card-title>
 
-    <div>
-      <label for="password">Senha</label>
-      <input
-        id="password"
-        type="password"
-        formControlName="password"
-        autocomplete="current-password"
-      />
-    </div>
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <mat-form-field>
+          <mat-label for="email">Login</mat-label>
+          <input
+            matInput
+            id="email"
+            type="text"
+            formControlName="email"
+            autocomplete="username"
+            placeholder="Username"
+          />
+        </mat-form-field>
 
-    <button type="submit" [disabled]="loading">
-      {{ loading ? 'Loading...' : 'Ok' }}
-    </button>
-  </form>
+        <mat-form-field>
+          <mat-label for="password">Senha</mat-label>
+          <input
+            matInput
+            id="password"
+            type="password"
+            formControlName="password"
+            autocomplete="current-password"
+            placeholder="Password"
+          />
+        </mat-form-field>
 
-  <p *ngIf="error" class="error">{{ error }}</p>
+        <p class="router-link" [routerLink]="'/auth/forgot-password'">Forgot password?</p>
+
+        <button type="submit" [disabled]="loading">
+          {{ loading ? 'Loading...' : 'Login' }}
+        </button>
+
+        <p class="router-link" [routerLink]="'/auth/register'">Dont have an account? Sign up</p>
+      </form>
+
+      <p *ngIf="error" class="error">{{ error }}</p>
+    </mat-card-content>
+  </mat-card>
 </section>
