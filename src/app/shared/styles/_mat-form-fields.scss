@@ -1,0 +1,31 @@
+@import './_colors.scss';
+
+mat-form-field.for-sale-input {
+  .mdc-text-field {
+    background-color: $color-hover-gray;
+    border: none;
+    border-radius: 10px;
+  }
+
+  // underline
+  .mdc-line-ripple {
+    display: none;
+  }
+
+  // input label
+  .mdc-floating-label {
+    mat-label {
+      color: $color-text-secondary;
+    }
+  }
+
+  // space div for error message
+  .mat-mdc-form-field-subscript-wrapper.mat-mdc-form-field-bottom-align {
+    height: 0;
+  }
+  mat-error {
+    font-size: 0.8rem;
+    color: $color-error;
+  }
+
+}

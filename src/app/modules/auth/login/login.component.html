@@ -1,40 +1,54 @@
 <section class="login-page">
   <mat-card class="login-card">
-    <mat-card-title>Welcome</mat-card-title>
+    <mat-card-title>Welcome to the jungle</mat-card-title>
 
     <mat-card-content>
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-        <mat-form-field>
-          <mat-label for="email">Login</mat-label>
+        <mat-form-field hideRequiredMarker class="for-sale-input">
+          <mat-label for="email">Email or Username</mat-label>
           <input
             matInput
             id="email"
             type="text"
             formControlName="email"
             autocomplete="username"
-            placeholder="Username"
           />
+          @if (loginForm.get('email')?.hasError('email')) {
+            <mat-error>Please enter a valid email address</mat-error>
+          }
+          @else if (loginForm.get('email')?.hasError('required')) {
+            <mat-error>Email is <strong>required</strong></mat-error>
+          }
         </mat-form-field>
 
-        <mat-form-field>
-          <mat-label for="password">Senha</mat-label>
+        <mat-form-field hideRequiredMarker class="for-sale-input">
+          <mat-label for="password">Password</mat-label>
           <input
             matInput
             id="password"
             type="password"
             formControlName="password"
             autocomplete="current-password"
-            placeholder="Password"
           />
+          @if (loginForm.get('password')?.hasError('required')) {
+            <mat-error>Password is <strong>required</strong></mat-error>
+          }
+          @else if (loginForm.get('password')?.hasError('minlength')) {
+            <mat-error>Password must be at least 6 characters long</mat-error>
+          }
         </mat-form-field>
 
-        <p class="router-link" [routerLink]="'/auth/forgot-password'">Forgot password?</p>
+        <span class="router-link" [routerLink]="'/auth/forgot-password'">Forgot password?</span>
 
-        <button type="submit" [disabled]="loading">
-          {{ loading ? 'Loading...' : 'Login' }}
+        <button
+          type="submit"
+          [disabled]="loading"
+          class="for-sale-button login-button"
+        >
+          {{ loading ? 'Loading...' : 'Log In' }}
         </button>
 
-        <p class="router-link" [routerLink]="'/auth/register'">Dont have an account? Sign up</p>
+        <p class="router-link" [routerLink]="'/auth/register'">Don't have an account? Sign up</p>
       </form>
 
       <p *ngIf="error" class="error">{{ error }}</p>

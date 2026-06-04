@@ -1,0 +1,10 @@
+@import './_colors.scss';
+
+button.for-sale-button {
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
