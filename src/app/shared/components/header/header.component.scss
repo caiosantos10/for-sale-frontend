@@ -10,15 +10,21 @@
   .brand-area {
     display: flex;
     align-items: center;
+
+    .brand-icon {
+      width: 1.5rem;
+      height: 1.5rem;
+      margin-right: 0.5rem;
+    }
+
+    .brand-chip {
+      color: $color-text-primary;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
   }
 
-  .brand-chip {
-    color: $color-text-primary;
-    font-size: 1.5rem;
-    font-weight: 800;
-  }
-
-  &__main-nav {
+  .main-nav {
     display: flex;
     gap: 8px;
 
@@ -40,23 +46,19 @@
     align-items: center;
     gap: 12px;
 
-    &__auth-links {
+    .auth-link-wrapper {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-    }
+      gap: .4rem;
 
-    &__auth-link {
-      border: 0;
-      background: transparent;
-      color: $color-text-primary;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      padding: 0;
+      .auth-link {
+        color: $color-text-primary;
+        cursor: pointer;
+        text-decoration: none;
 
-      &:hover {
-        text-decoration: underline;
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
 

@@ -1,29 +1,30 @@
 <header class="header-shell">
   <div class="brand-area">
+    <img src="/brand-icon.svg" alt="Branch icon" class="mat-icon-rtl-mirror" class="brand-icon">
     <span class="brand-chip">For Sale</span>
   </div>
 
   @if (isLoggedIn) {
-      <nav class="header-shell__main-nav" aria-label="Logged Menu">
-        @for (item of menuItems; track item.label) {
-          <a class="header-shell__main-nav--link" [routerLink]="item.route">{{ item.label }}</a>
-        }
-      </nav>
-  } @else {
-    <nav class="header-shell__main-nav" aria-label="Home">
-      <a class="header-shell__main-nav--link" [routerLink]="'/home'">Home</a>
-      <a class="header-shell__main-nav--link" [routerLink]="'/home'">About us</a>
-      <a class="header-shell__main-nav--link" [routerLink]="'/home'">Reviews</a>
-      <a class="header-shell__main-nav--link" [routerLink]="'/home'">FAQ</a>
+    <nav class="main-nav" aria-label="Logged Menu">
+      @for (item of menuItems; track item.label) {
+        <a class="main-nav--link" [routerLink]="item.route">{{ item.label }}</a>
+      }
     </nav>
+  } @else {
+  <nav class="main-nav" aria-label="Menu">
+    <a class="main-nav--link" [routerLink]="'/home'">Home</a>
+    <a class="main-nav--link" [routerLink]="'/home'">About us</a>
+    <a class="main-nav--link" [routerLink]="'/home'">Reviews</a>
+    <a class="main-nav--link" [routerLink]="'/home'">FAQ</a>
+  </nav>
   }
 
   <div class="user-menu" [class.user-menu--open]="isUserMenuOpen">
     @if (!isLoggedIn) {
-      <div class="user-menu__auth-links" aria-label="Acesso da conta">
-        <a class="user-menu__auth-link" [routerLink]="'/auth/login'">Login</a>
-        <span class="user-menu__auth-link">or</span>
-        <a class="user-menu__auth-link" [routerLink]="'/auth/register'">Register</a>
+      <div class="auth-link-wrapper" aria-label="Acesso da conta">
+        <a class="auth-link" [routerLink]="'/auth/login'">Login</a>
+        <span class="auth-link" style="text-decoration: none;">or</span>
+        <a class="auth-link" [routerLink]="'/auth/register'">Register</a>
       </div>
     }
 

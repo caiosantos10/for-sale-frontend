@@ -1,8 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+@use 'colors' as *;
+@use 'mat-form-fields' as *;
+@use 'buttons' as *;
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
-@import './app/shared/styles/_colors.scss';
-@import './app/shared/styles/mat-form-fields.scss';
-@import './app/shared/styles/buttons.scss';
 
 html,
 body {
