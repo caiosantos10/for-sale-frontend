@@ -1,0 +1,36 @@
+@use 'colors' as *;
+@use 'sass:color';
+
+.register-page {
+  .register-card {
+    width: 50%;
+
+    .register-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+
+      .register-submit-button {
+        background-color: $color-brand;
+        color: $color-white;
+
+        &:hover {
+          background-color: color.adjust($color-brand, $lightness: -10%);
+        }
+        &:disabled {
+          background-color: light-dark(rgba(239, 239, 239, 0.3), rgba(19, 1, 1, 0.3));
+          color: light-dark(rgba(16, 16, 16, 0.3), rgba(255, 255, 255, 0.3));
+          border-color: light-dark(rgba(118, 118, 118, 0.3), rgba(195, 195, 195, 0.3));
+        }
+      }
+    }
+
+    mat-card-title {
+      font-size: 1.5rem;
+      font-weight: 500;
+      padding-left: 16px;
+      letter-spacing: .02rem;
+      margin: 2rem 0;
+    }
+  }
+}
