@@ -47,7 +47,7 @@
           {{ loading ? 'Loading...' : 'Log In' }}
         </button>
 
-        <p class="router-link" [routerLink]="'/auth/register'">Don't have an account? Sign up</p>
+        <span class="router-link" [routerLink]="'/auth/register'">Don't have an account? Sign up</span>
       </form>
 
       <p *ngIf="error" class="error">{{ error }}</p>

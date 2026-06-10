@@ -54,7 +54,7 @@ describe('HeaderComponent', () => {
     });
 
     it('should show login and register links', () => {
-      const links = fixture.debugElement.queryAll(By.css('.user-menu__auth-link'));
+      const links = fixture.debugElement.queryAll(By.css('.auth-link'));
       const texts = links.map(l => l.nativeElement.textContent.trim());
       expect(texts).toContain('Login');
       expect(texts).toContain('Register');
@@ -80,7 +80,7 @@ describe('HeaderComponent', () => {
     });
 
     it('should show the main nav with menu items', () => {
-      const links = fixture.debugElement.queryAll(By.css('.header-shell__main-nav--link'));
+      const links = fixture.debugElement.queryAll(By.css('.main-nav--link'));
       expect(links.length).toBe(3);
       expect(links[0].nativeElement.textContent.trim()).toBe('Products');
       expect(links[1].nativeElement.textContent.trim()).toBe('Orders');

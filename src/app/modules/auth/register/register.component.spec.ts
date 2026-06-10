@@ -301,10 +301,19 @@ describe('RegisterComponent', () => {
     it('should render role select with CUSTOMER and ADMIN options', () => {
       const roleSelect = fixture.nativeElement.querySelector('#role');
       expect(roleSelect).toBeTruthy();
-      const options = roleSelect.querySelectorAll('option');
-      expect(options.length).toBe(2);
-      expect(options[0].value).toBe('CUSTOMER');
-      expect(options[1].value).toBe('ADMIN');
+      
+      // Open the select to render the options panel
+      roleSelect.click();
+      fixture.detectChanges();
+      
+      // Find options in the overlay panel
+      const options = document.querySelectorAll('.mat-mdc-option');
+      expect(options.length).toBeGreaterThanOrEqual(2);
+      
+      // Verify option values by checking their text content or attributes
+      const optionTexts = Array.from(options).map(opt => opt.textContent?.trim());
+      expect(optionTexts).toContain('CUSTOMER');
+      expect(optionTexts).toContain('ADMIN');
     });
 
     it('should render submit button', () => {

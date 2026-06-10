@@ -174,7 +174,7 @@ describe('LoginComponent', () => {
 
   describe('onSubmit with valid form — error', () => {
     beforeEach(() => {
-      component.loginForm.setValue({ email: 'user@test.com', password: 'wrong' });
+      component.loginForm.setValue({ email: 'user@test.com', password: 'wrong password' });
       mockAuthService.login.and.returnValue(throwError(() => new Error('Unauthorized')));
     });
 
